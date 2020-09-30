@@ -18,7 +18,6 @@ set splitright
 
 set ruler
 
-
 let mapleader=" "
 
 " Clear highlighting on escape in normal mode
@@ -42,6 +41,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
+Plug 'ryanoasis/vim-devicons'
 
 Plug 'chriskempson/base16-vim'
 
@@ -60,12 +60,47 @@ Plug 'editorconfig/editorconfig-vim'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+
 " Initialize plugin system
 call plug#end()
 
+" COC
+let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver']
+
 " This line enables the true color support
 set termguicolors
-colorscheme  base16-atelier-dune
+colorscheme  base16-solarized-dark
 set rtp+=/usr/local/opt/fzf
 
-set guifont=source-code-pro
+set guifont=Monolisa
+
+" open new split panes to right and below
+set splitright
+set splitbelow
+
+" NerdTree
+"
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeIgnore = []
+let g:NERDTreeStatusline = ''
+" Automaticaly close nvim if NERDTree is only thing left open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Toggle
+nnoremap <silent> <C-b> :NERDTreeToggle<CR>
+
+" Terminal
+"
+" turn terminal to normal mode with escape
+tnoremap <Esc> <C-\><C-n>
+" start terminal in insert mode
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+" open terminal on ctrl+n
+function! OpenTerminal()
+  split term://zsh
+  resize 10
+endfunction
+nnoremap <c-n> :call OpenTerminal()<CR>
+
